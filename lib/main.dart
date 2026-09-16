@@ -1,13 +1,15 @@
-import 'package:faizaldo_ppkd_app_dev/latihan_widget/latihan_column.dart';
-import 'package:faizaldo_ppkd_app_dev/tgs_btn/tgs_btn.dart';
-import 'package:faizaldo_ppkd_app_dev/tugas_flutter2/profil_layout.dart';
-import 'package:faizaldo_ppkd_app_dev/tugas_flutter_1/layouting.dart';
-import 'package:faizaldo_ppkd_app_dev/tugas_flutter_1/profil.dart';
-import 'package:faizaldo_ppkd_app_dev/tugas_flutter_3_4/tugas_listview.dart';
-import 'package:faizaldo_ppkd_app_dev/tugas_flutter_3_4/tugas_view_input.dart';
+import 'package:devlearning_indo/pages/form_daftar.dart';
+import 'package:devlearning_indo/pages/home.dart';
+import 'package:devlearning_indo/pages/login_screen.dart';
+import 'package:devlearning_indo/pages/tes.dart';
+import 'package:devlearning_indo/pages/validasi.dart';
+import 'package:devlearning_indo/preference_system/preference.dart';
+import 'package:devlearning_indo/splash/splash.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+ await PreferenceHandler.init();
   runApp(const MyApp());
 }
 
@@ -17,16 +19,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    //build method adalah method yang digunakan untuk membangun widget
     return MaterialApp(
-      //MaterialApp adalah widget yang digunakan untuk mengatur tema, navigasi, dan lainnya dalam aplikasi
-      title: 'Test App', //
-      theme: ThemeData(
-        //ThemeData adalah class yang digunakan untuk mengatur tema aplikasi
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF155E63)),
-      ),
-      home: const TgsBtn(),
       debugShowCheckedModeBanner: false,
+      title: 'Devlearning.Indo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        fontFamily: 'Poppins',
+      ),
+      home: const Splash(),
     );
   }
 }

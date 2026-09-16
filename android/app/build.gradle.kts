@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.faizaldo_ppkd_app_dev"
+    namespace = "com.example.devlearning_indo"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -16,7 +16,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.faizaldo_ppkd_app_dev"
+        applicationId = "com.example.devlearning_indo"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion

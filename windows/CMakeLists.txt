@@ -1,10 +1,10 @@
 # Project-level configuration.
 cmake_minimum_required(VERSION 3.14)
-project(faizaldo_ppkd_app_dev LANGUAGES CXX)
+project(devlearning_indo LANGUAGES CXX)
 
 # The name of the executable created for the application. Change this to change
 # the on-disk name of your application.
-set(BINARY_NAME "faizaldo_ppkd_app_dev")
+set(BINARY_NAME "devlearning_indo")
 
 # Explicitly opt in to modern CMake behaviors to avoid warnings with recent
 # versions of CMake.

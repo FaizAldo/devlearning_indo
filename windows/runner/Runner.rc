@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "faizaldo_ppkd_app_dev" "\0"
+            VALUE "FileDescription", "devlearning_indo" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "faizaldo_ppkd_app_dev" "\0"
+            VALUE "InternalName", "devlearning_indo" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2026 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "faizaldo_ppkd_app_dev.exe" "\0"
-            VALUE "ProductName", "faizaldo_ppkd_app_dev" "\0"
+            VALUE "OriginalFilename", "devlearning_indo.exe" "\0"
+            VALUE "ProductName", "devlearning_indo" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

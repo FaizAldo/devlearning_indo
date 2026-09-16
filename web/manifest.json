@@ -1,6 +1,6 @@
 {
-    "name": "faizaldo_ppkd_app_dev",
-    "short_name": "faizaldo_ppkd_app_dev",
+    "name": "devlearning_indo",
+    "short_name": "devlearning_indo",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
