@@ -145,10 +145,11 @@ class AboutPage extends StatelessWidget {
   static Future<void> _logout(BuildContext context) async {
     await PreferenceHandler.logOut();
     if (!context.mounted) return;
-    Navigator.of(context).pushReplacement(
+    Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (_) => const LoginScreen(showLogoutMessage: true),
       ),
+      (route) => false,
     );
   }
 }

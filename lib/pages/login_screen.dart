@@ -51,15 +51,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
     final pengguna = await DatabaseHelper.instance.loginUser(user, pass);
 
-    if (!mounted) return; // Menghindari linter warning penggunaan BuildContext
+    if (!mounted) return;
 
     if (pengguna != null) {
       await PreferenceHandler.setLogin(true);
       _showNotification('Login berhasil', Colors.green);
       await Future<void>.delayed(const Duration(milliseconds: 500));
       if (!mounted) return;
-      ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
-      Navigator.of(context).pushAndRemoveUntil(
+
+      final messenger = ScaffoldMessenger.maybeOf(context);
+      messenger?.removeCurrentMaterialBanner();
+
+      if (!mounted) return;
+      Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => const HomeApp()),
         (route) => false,
       );
@@ -77,30 +81,35 @@ class _LoginScreenState extends State<LoginScreen> {
     Color color, {
     bool showCloseButton = false,
   }) {
-    final messenger = ScaffoldMessenger.of(context);
+    final messenger = ScaffoldMessenger.maybeOf(context);
+    if (messenger == null) return;
+
     final notificationVersion = ++_notificationVersion;
 
-    messenger
-      ..removeCurrentMaterialBanner()
-      ..showMaterialBanner(
-        MaterialBanner(
-          content: Text(message),
-          backgroundColor: color.withValues(alpha: 0.12),
-          leading: Icon(Icons.info_outline, color: color),
-          actions: showCloseButton
-              ? [
-                  TextButton(
-                    onPressed: messenger.removeCurrentMaterialBanner,
-                    child: const Text('Tutup'),
-                  ),
-                ]
-              : const [],
+    messenger.clearSnackBars();
+    messenger.showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            Icon(Icons.info_outline, color: color),
+            const SizedBox(width: 8),
+            Expanded(child: Text(message)),
+          ],
         ),
-      );
+        backgroundColor: color.withValues(alpha: 0.12),
+        behavior: SnackBarBehavior.floating,
+        action: showCloseButton
+            ? SnackBarAction(
+                label: 'Tutup',
+                onPressed: messenger.removeCurrentSnackBar,
+              )
+            : null,
+      ),
+    );
 
     Future<void>.delayed(const Duration(seconds: 3), () {
       if (mounted && notificationVersion == _notificationVersion) {
-        messenger.removeCurrentMaterialBanner();
+        messenger.removeCurrentSnackBar();
       }
     });
   }

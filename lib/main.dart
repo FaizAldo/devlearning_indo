@@ -1,5 +1,6 @@
 import 'package:devlearning_indo/preference_system/preference.dart';
 import 'package:devlearning_indo/splash/splash.dart';
+import 'package:devlearning_indo/tgs_7/tgs_7.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         fontFamily: 'Poppins',
       ),
-      home: const Splash(),
+      home: const Tgs7(),
     );
   }
 }
