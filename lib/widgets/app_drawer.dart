@@ -1,10 +1,3 @@
-import 'package:faizaldo_ppkd_app_dev/latihan_widget/latihan_circleavatar.dart';
-import 'package:faizaldo_ppkd_app_dev/latihan_widget/latihan_column.dart';
-import 'package:faizaldo_ppkd_app_dev/latihan_widget/latihan_icon.dart';
-import 'package:faizaldo_ppkd_app_dev/latihan_widget/latihan_ricthtext.dart';
-import 'package:faizaldo_ppkd_app_dev/latihan_widget/latihan_row.dart';
-import 'package:faizaldo_ppkd_app_dev/latihan_widget/latihan_scafold.dart';
-import 'package:faizaldo_ppkd_app_dev/latihan_widget/latihan_text.dart';
 import 'package:faizaldo_ppkd_app_dev/home/home.dart';
 import 'package:faizaldo_ppkd_app_dev/tugas_flutter_1/layouting.dart';
 import 'package:faizaldo_ppkd_app_dev/tugas_flutter_1/profil.dart';
@@ -50,49 +43,6 @@ class AppDrawer extends StatelessWidget {
               Icons.article,
               'Layouting Tugas 1',
               const Layouting(),
-            ),
-            const Divider(),
-            _item(
-              context,
-              Icons.text_fields,
-              'Latihan Text',
-              const LatihanText(),
-            ),
-            _item(
-              context,
-              Icons.view_column,
-              'Latihan Column',
-              const LatihanColumn(),
-            ),
-            _item(
-              context,
-              Icons.view_agenda,
-              'Latihan Row',
-              const LatihanRow(),
-            ),
-            _item(
-              context,
-              Icons.image,
-              'Latihan CircleAvatar',
-              const LatihanCircleavatar(),
-            ),
-            _item(
-              context,
-              Icons.battery_charging_full,
-              'Latihan Icon',
-              const LatihanIcon(),
-            ),
-            _item(
-              context,
-              Icons.format_bold,
-              'Latihan RichText',
-              const LatihanRichText(),
-            ),
-            _item(
-              context,
-              Icons.dashboard,
-              'Latihan Scaffold',
-              const LatihanScafold(),
             ),
           ],
         ),
