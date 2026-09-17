@@ -1,5 +1,71 @@
-import 'package:devlearning_indo/widgets/app_drawer.dart';
 import 'package:flutter/material.dart';
+
+class AppDrawer extends StatelessWidget {
+  const AppDrawer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: const [
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Color(0xFF155E63),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                CircleAvatar(
+                  radius: 28,
+                  backgroundColor: Colors.white,
+                  child: Icon(
+                    Icons.school_rounded,
+                    size: 30,
+                    color: Color(0xFF155E63),
+                  ),
+                ),
+                SizedBox(height: 12),
+                Text(
+                  'DevLearning Indo',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  'Belajar Flutter',
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.home_rounded),
+            title: Text('Home'),
+          ),
+          ListTile(
+            leading: Icon(Icons.person_rounded),
+            title: Text('Profil'),
+          ),
+          ListTile(
+            leading: Icon(Icons.assignment_rounded),
+            title: Text('Tugas'),
+          ),
+          ListTile(
+            leading: Icon(Icons.logout_rounded),
+            title: Text('Logout'),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 class Home extends StatelessWidget {
   const Home({super.key});
