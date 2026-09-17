@@ -10,45 +10,35 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:devlearning_indo/main.dart';
 
 void main() {
-  testWidgets('email wajib mengandung tanda @', (WidgetTester tester) async {
+  testWidgets('splash screen menuju ke halaman login', (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
     await tester.pump(const Duration(seconds: 2));
     await tester.pumpAndSettle();
 
-    final fields = find.byType(TextFormField);
-    await tester.enterText(fields.at(0), 'Budi');
-    await tester.enterText(fields.at(1), 'budi.example.com');
-    await tester.enterText(fields.at(3), 'Bandung');
-    await tester.tap(find.text('Daftar'));
-    await tester.pump();
-
-    expect(find.text('Format email tidak valid'), findsOneWidget);
+    expect(find.text('Login'), findsWidgets);
+    expect(find.text('Belum punya akun?'), findsOneWidget);
   });
 
-  testWidgets('pendaftaran menampilkan dialog dan konfirmasi', (
+  testWidgets('register screen menampilkan form dan validasi email', (
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(const MyApp());
     await tester.pump(const Duration(seconds: 2));
     await tester.pumpAndSettle();
 
+    await tester.tap(find.widgetWithText(TextButton, 'Register'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Buat Akun'), findsOneWidget);
+
     final fields = find.byType(TextFormField);
-    await tester.enterText(fields.at(0), 'Budi');
-    await tester.enterText(fields.at(1), 'budi@example.com');
-    await tester.enterText(fields.at(3), 'Bandung');
-    await tester.tap(find.text('Daftar'));
-    await tester.pumpAndSettle();
+    await tester.enterText(fields.at(0), 'budi.example.com');
+    await tester.enterText(fields.at(1), '123456');
+    await tester.enterText(fields.at(2), '123456');
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Register'));
+    await tester.pump();
 
-    expect(find.text('Ringkasan Pendaftaran'), findsOneWidget);
-    expect(find.text('Nama: Budi'), findsOneWidget);
-
-    await tester.tap(find.text('Lanjut'));
-    await tester.pumpAndSettle();
-
-    expect(
-      find.text('Terima kasih, Budi dari Bandung telah mendaftar.'),
-      findsOneWidget,
-    );
+    expect(find.text('Format email tidak valid'), findsOneWidget);
   });
 }
 

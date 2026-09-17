@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:devlearning_indo/pages/login_screen.dart';
+import 'package:devlearning_indo/preference_system/preference.dart';
 import 'package:devlearning_indo/reusable/app_texts.dart';
 
 class AboutPage extends StatelessWidget {
@@ -60,17 +61,14 @@ class AboutPage extends StatelessWidget {
               onTap: () => Navigator.pop(context),
             ),
             ListTile(
-              leading: const Icon(Icons.login),
+              leading: const Icon(Icons.logout),
               title: const Text(
-                AppTexts.loginTitle,
+                'Logout',
                 style: TextStyle(color: Color(0xFF245B36)),
               ),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginScreen()),
-                );
+                _logout(context);
               },
             ),
           ],
@@ -114,6 +112,42 @@ class AboutPage extends StatelessWidget {
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: 1,
+        onDestinationSelected: (index) {
+          if (index == 0) {
+            Navigator.pop(context);
+            return;
+          }
+
+          if (index == 2) {
+            _logout(context);
+          }
+        },
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home),
+            label: AppTexts.homeTitle,
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.info_outline),
+            selectedIcon: Icon(Icons.info),
+            label: AppTexts.aboutTitle,
+          ),
+          NavigationDestination(icon: Icon(Icons.logout), label: 'Logout'),
+        ],
+      ),
+    );
+  }
+
+  static Future<void> _logout(BuildContext context) async {
+    await PreferenceHandler.logOut();
+    if (!context.mounted) return;
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (_) => const LoginScreen(showLogoutMessage: true),
       ),
     );
   }

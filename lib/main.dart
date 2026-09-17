@@ -1,8 +1,3 @@
-import 'package:devlearning_indo/pages/form_daftar.dart';
-import 'package:devlearning_indo/pages/home.dart';
-import 'package:devlearning_indo/pages/login_screen.dart';
-import 'package:devlearning_indo/pages/tes.dart';
-import 'package:devlearning_indo/pages/validasi.dart';
 import 'package:devlearning_indo/preference_system/preference.dart';
 import 'package:devlearning_indo/splash/splash.dart';
 import 'package:flutter/material.dart';

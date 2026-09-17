@@ -1,12 +1,13 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:devlearning_indo/database/db_helper.dart';
 import 'package:devlearning_indo/pages/home.dart';
 import 'package:devlearning_indo/pages/register_screen.dart';
+import 'package:devlearning_indo/preference_system/preference.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final bool showLogoutMessage;
+
+  const LoginScreen({super.key, this.showLogoutMessage = false});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -18,13 +19,24 @@ class _LoginScreenState extends State<LoginScreen> {
   final userController = TextEditingController();
 
   final passController = TextEditingController();
-  Timer? _notificationTimer;
+  int _notificationVersion = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.showLogoutMessage) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _showNotification('Berhasil Logout', Colors.green);
+        }
+      });
+    }
+  }
 
   @override
   void dispose() {
     userController.dispose();
     passController.dispose();
-    _notificationTimer?.cancel();
     super.dispose();
   }
 
@@ -42,9 +54,11 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!mounted) return; // Menghindari linter warning penggunaan BuildContext
 
     if (pengguna != null) {
+      await PreferenceHandler.setLogin(true);
       _showNotification('Login berhasil', Colors.green);
       await Future<void>.delayed(const Duration(milliseconds: 500));
       if (!mounted) return;
+      ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => const HomeApp()),
         (route) => false,
@@ -58,50 +72,35 @@ class _LoginScreenState extends State<LoginScreen> {
     _showNotification('Fitur reset password segera hadir', Colors.orange);
   }
 
-  void _showNotification(String message, Color color) {
+  void _showNotification(
+    String message,
+    Color color, {
+    bool showCloseButton = false,
+  }) {
     final messenger = ScaffoldMessenger.of(context);
-    _notificationTimer?.cancel();
-    final remainingSeconds = ValueNotifier<int>(59);
-
-    void closeNotification() {
-      _notificationTimer?.cancel();
-      remainingSeconds.dispose();
-      messenger.hideCurrentMaterialBanner();
-    }
+    final notificationVersion = ++_notificationVersion;
 
     messenger
-      ..hideCurrentMaterialBanner()
+      ..removeCurrentMaterialBanner()
       ..showMaterialBanner(
         MaterialBanner(
-          content: ValueListenableBuilder<int>(
-            valueListenable: remainingSeconds,
-            builder: (context, seconds, child) {
-              return Text('$message ($seconds detik)');
-            },
-          ),
+          content: Text(message),
           backgroundColor: color.withValues(alpha: 0.12),
           leading: Icon(Icons.info_outline, color: color),
-          actions: [
-            TextButton(
-              onPressed: closeNotification,
-              child: const Text('Tutup'),
-            ),
-          ],
+          actions: showCloseButton
+              ? [
+                  TextButton(
+                    onPressed: messenger.removeCurrentMaterialBanner,
+                    child: const Text('Tutup'),
+                  ),
+                ]
+              : const [],
         ),
       );
 
-    _notificationTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (!mounted) {
-        timer.cancel();
-        remainingSeconds.dispose();
-        return;
-      }
-
-      remainingSeconds.value--;
-      if (remainingSeconds.value <= 0) {
-        timer.cancel();
-        remainingSeconds.dispose();
-        messenger.hideCurrentMaterialBanner();
+    Future<void>.delayed(const Duration(seconds: 3), () {
+      if (mounted && notificationVersion == _notificationVersion) {
+        messenger.removeCurrentMaterialBanner();
       }
     });
   }
@@ -227,8 +226,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 12),
                     Center(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
                           const Text(
                             'Belum punya akun? ',

@@ -4,6 +4,7 @@ import 'package:devlearning_indo/pages/login_screen.dart';
 import 'package:devlearning_indo/database/db_helper.dart';
 import 'package:devlearning_indo/models/form_input.dart';
 import 'package:devlearning_indo/models/product.dart';
+import 'package:devlearning_indo/preference_system/preference.dart';
 import 'package:devlearning_indo/reusable/app_texts.dart';
 
 const _categories = [
@@ -99,6 +100,7 @@ class _HomeAppState extends State<HomeApp> {
   final _emailController = TextEditingController();
   final _messageController = TextEditingController();
   final _databaseHelper = DatabaseHelper.instance;
+  int _notificationVersion = 0;
 
   @override
   void dispose() {
@@ -113,6 +115,16 @@ class _HomeAppState extends State<HomeApp> {
       _selectedIndex = 0;
     });
     Navigator.pop(context);
+  }
+
+  Future<void> _logout() async {
+    await PreferenceHandler.logOut();
+    if (!mounted) return;
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (_) => const LoginScreen(showLogoutMessage: true),
+      ),
+    );
   }
 
   @override
@@ -143,7 +155,12 @@ class _HomeAppState extends State<HomeApp> {
             return;
           }
 
-          final page = index == 1 ? const AboutPage() : const LoginScreen();
+              if (index == 2) {
+                _logout();
+                return;
+              }
+
+              const page = AboutPage();
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => page),
@@ -160,10 +177,10 @@ class _HomeAppState extends State<HomeApp> {
             selectedIcon: Icon(Icons.info),
             label: AppTexts.aboutTitle,
           ),
-          NavigationDestination(
-            icon: Icon(Icons.login),
-            label: AppTexts.loginTitle,
-          ),
+              NavigationDestination(
+                icon: Icon(Icons.logout),
+                label: 'Logout',
+              ),
         ],
       ),
       drawer: Drawer(
@@ -203,17 +220,14 @@ class _HomeAppState extends State<HomeApp> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.login),
+              leading: const Icon(Icons.logout),
               title: const Text(
-                AppTexts.loginTitle,
+                'Logout',
                 style: TextStyle(color: Color(0xFF245B36)),
               ),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginScreen()),
-                );
+                _logout();
               },
             ),
           ],
@@ -401,8 +415,44 @@ class _HomeAppState extends State<HomeApp> {
         message: _messageController.text.trim(),
       ),
     );
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Data berhasil disimpan')));
+    _showNotification(
+      'Data berhasil disimpan',
+      Colors.green,
+      showCloseButton: true,
+    );
+  }
+
+  void _showNotification(
+    String message,
+    Color color, {
+    bool showCloseButton = false,
+  }) {
+    final messenger = ScaffoldMessenger.of(context);
+    final notificationVersion = ++_notificationVersion;
+
+    messenger
+      ..removeCurrentMaterialBanner()
+      ..showMaterialBanner(
+        MaterialBanner(
+          content: Text(message),
+          backgroundColor: color.withValues(alpha: 0.12),
+          leading: Icon(Icons.info_outline, color: color),
+          actions: showCloseButton
+              ? [
+                  TextButton(
+                    onPressed: messenger.removeCurrentMaterialBanner,
+                    child: const Text('Tutup'),
+                  ),
+                ]
+              : const [],
+        ),
+      );
+
+    Future<void>.delayed(const Duration(seconds: 3), () {
+      if (mounted && notificationVersion == _notificationVersion) {
+        messenger.removeCurrentMaterialBanner();
+      }
+    });
   }
 }
 

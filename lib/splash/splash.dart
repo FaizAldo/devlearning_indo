@@ -1,6 +1,6 @@
-import 'dart:async';
-
+import 'package:devlearning_indo/pages/home.dart';
 import 'package:devlearning_indo/pages/login_screen.dart';
+import 'package:devlearning_indo/preference_system/preference.dart';
 import 'package:flutter/material.dart';
 
 class Splash extends StatefulWidget {
@@ -13,7 +13,6 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _scaleAnimation;
-  Timer? _navigationTimer;
 
   @override
   void initState() {
@@ -29,17 +28,19 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
 
     _controller.forward();
 
-    _navigationTimer = Timer(const Duration(seconds: 2), () {
+    Future<void>.delayed(const Duration(seconds: 2), () {
       if (!mounted) return;
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const LoginScreen()),
+        MaterialPageRoute(
+          builder: (_) =>
+              PreferenceHandler.isLogin ? const HomeApp() : const LoginScreen(),
+        ),
       );
     });
   }
 
   @override
   void dispose() {
-    _navigationTimer?.cancel();
     _controller.dispose();
     super.dispose();
   }
@@ -68,6 +69,8 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              const SizedBox(height: 20),
+              const CircularProgressIndicator(color: Color(0xFF245B36)),
             ],
           ),
         ),
