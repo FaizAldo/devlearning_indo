@@ -61,6 +61,7 @@ Materi pembelajaran dikelompokkan ke dalam kategori berikut:
 - Animasi
 - Multimedia
 - Fotografi dan Videografi
+- Content Creation
 - 3D Modeling
 - Game Development
 - Broadcasting dan Perfilman
